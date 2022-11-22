@@ -3,8 +3,10 @@ package com.project.readingisgood.service.book;
 import com.project.readingisgood.entity.Book;
 import com.project.readingisgood.entity.Stock;
 import com.project.readingisgood.exception.exceptions.BookNotFoundException;
+import com.project.readingisgood.exception.exceptions.QuantityException;
 import com.project.readingisgood.model.request.BookSaveRequestModel;
 import com.project.readingisgood.repository.BookRepository;
+import com.project.readingisgood.service.stock.StockService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,11 +21,13 @@ public class BookServiceImpl implements BookService{
     Logger logger = LoggerFactory.getLogger(BookServiceImpl.class);
 
     private final BookRepository bookRepository;
+    private final StockService stockService;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public BookServiceImpl(BookRepository bookRepository, ModelMapper modelMapper) {
+    public BookServiceImpl(BookRepository bookRepository, StockService stockService, ModelMapper modelMapper) {
         this.bookRepository = bookRepository;
+        this.stockService = stockService;
         this.modelMapper = modelMapper;
     }
 
@@ -47,5 +51,12 @@ public class BookServiceImpl implements BookService{
         return bookRepository.findBooksByIdIn(bookIds);
     }
 
+    @Override
+    public String updateStockOfBook(long bookId, long quantity) throws BookNotFoundException, QuantityException {
+        if( quantity < 0) throw new QuantityException("Quantity cannot be less than 0");
+        findBookById(bookId);
+        stockService.updateStockQuantityByBookId(quantity,bookId);
+        return "Successfully updated";
+    }
 
 }

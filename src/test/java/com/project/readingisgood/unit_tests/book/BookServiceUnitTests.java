@@ -3,6 +3,7 @@ package com.project.readingisgood.unit_tests.book;
 import com.project.readingisgood.entity.Book;
 import com.project.readingisgood.entity.Stock;
 import com.project.readingisgood.exception.exceptions.BookNotFoundException;
+import com.project.readingisgood.exception.exceptions.QuantityException;
 import com.project.readingisgood.model.request.BookSaveRequestModel;
 import com.project.readingisgood.service.book.BookService;
 import org.junit.jupiter.api.Test;
@@ -49,14 +50,13 @@ public class BookServiceUnitTests {
     }
 
     @Test
-    void findBookById_test_should_return_book_not_found_ex(){
+    void findBookById_test_should_return_book_not_found_ex() {
         var bookId = 1;
         try {
             Mockito.when(bookService.findBookById(bookId)).thenThrow(new BookNotFoundException("Book not found."));
             bookService.findBookById(bookId);
         } catch (BookNotFoundException e) {
-            e.printStackTrace();
-            assertEquals("Book not found.",e.getMessage());
+            assertEquals("Book not found.", e.getMessage());
         }
     }
 
@@ -71,6 +71,45 @@ public class BookServiceUnitTests {
         var existBooks = bookService.findBooksByIdIn(bookIds);
 
         assertEquals(id, existBooks.get(0).getId());
+    }
+
+    @Test
+    void updateStockOfBook_test_should_update_book_stock() throws BookNotFoundException, QuantityException {
+        var bookId = 1L;
+        var newQuantity = 40L;
+        var expectedMessage = "Successfully updated.";
+        Mockito.when(bookService.updateStockOfBook(bookId, newQuantity))
+                .thenReturn("Successfully updated.");
+        String res = bookService.updateStockOfBook(bookId, newQuantity);
+        assertEquals(expectedMessage, res);
+    }
+
+    @Test
+    void updateStockOfBook_test_should_return_book_not_found_ex() {
+        var bookId = 1L;
+        var newQuantity = 40L;
+        try {
+            Mockito.when(bookService.updateStockOfBook(bookId, newQuantity))
+                    .thenThrow(new BookNotFoundException("Book not found."));
+            bookService.updateStockOfBook(bookId, newQuantity);
+        } catch (BookNotFoundException | QuantityException e) {
+            assertTrue(e instanceof BookNotFoundException);
+            assertEquals("Book not found.", e.getMessage());
+        }
+    }
+
+    @Test
+    void updateStockOfBook_test_should_return_quantity_ex() {
+        var bookId = 1L;
+        var newQuantity = -1L;
+        try {
+            Mockito.when(bookService.updateStockOfBook(bookId, newQuantity))
+                    .thenThrow(new QuantityException("Quantity cannot be less than 0."));
+            bookService.updateStockOfBook(bookId, newQuantity);
+        } catch (QuantityException | BookNotFoundException e) {
+            assertTrue(e instanceof QuantityException);
+            assertEquals("Quantity cannot be less than 0.", e.getMessage());
+        }
     }
 
     Book getBook(long bookId, String bookName, long quantity, double price) {
