@@ -24,6 +24,11 @@ public class Stock {
         this.book = book;
     }
 
+    public Stock(long quantity, Book book) {
+        this.quantity = quantity;
+        this.book = book;
+    }
+
     public Stock() {
     }
 
