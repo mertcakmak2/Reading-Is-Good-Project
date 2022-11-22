@@ -1,15 +1,23 @@
 package com.project.readingisgood.unit_tests.customer;
 
 import com.project.readingisgood.entity.Customer;
+import com.project.readingisgood.entity.Order;
 import com.project.readingisgood.exception.exceptions.CustomerAlreadyExistException;
 import com.project.readingisgood.exception.exceptions.CustomerNotFoundException;
+import com.project.readingisgood.model.enums.OrderStatesEnum;
 import com.project.readingisgood.model.request.CustomerSaveRequestModel;
+import com.project.readingisgood.model.request.PageableRequestModel;
 import com.project.readingisgood.service.customer.CustomerService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+
+import java.util.Arrays;
+import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -81,7 +89,46 @@ public class CustomerServiceUnitTests {
         assertEquals(email,existCustomer.getEmail());
     }
 
+    @Test
+    void retrieveOrdersOfCustomer_test_should_retrieve_orders_of_customer() throws CustomerNotFoundException {
+        var customerId = 1L;
+        var pageWithOrders = getPageWithOrder();
+        var pageableRequest = new PageableRequestModel(0,5);
+        Mockito.when(customerService.retrieveOrdersOfCustomer(customerId,pageableRequest))
+                .thenReturn(pageWithOrders);
+
+        var orderPage = customerService.
+                retrieveOrdersOfCustomer(customerId,pageableRequest);
+
+        var order = orderPage.getContent().get(0);
+        assertEquals(customerId, order.getCustomer().getId());
+    }
+
+    @Test
+    void retrieveOrdersOfCustomer_test_should_throw_customer_not_found_ex() {
+        var customerId = 1L;
+        var pageWithOrders = getPageWithOrder();
+        var pageableRequest = new PageableRequestModel(0,5);
+        try {
+            Mockito.when(customerService.retrieveOrdersOfCustomer(customerId,pageableRequest))
+                    .thenThrow(new CustomerNotFoundException("Customer not found."));
+            customerService.retrieveOrdersOfCustomer(customerId,pageableRequest);
+        } catch (CustomerNotFoundException e) {
+            assertEquals("Customer not found.", e.getMessage());
+        }
+    }
+
     Customer getCustomer(){
         return new Customer(1,"mert","mertcakmak2@gmail.com","123", null);
+    }
+
+    Order getOrder() {
+        return new Order(1, OrderStatesEnum.RECEIVED, new Date(), getCustomer(), null);
+    }
+
+    Page<Order> getPageWithOrder() {
+        var orders = Arrays.asList(getOrder());
+        var pageWithOrder = new PageImpl<Order>(orders);
+        return pageWithOrder;
     }
 }
