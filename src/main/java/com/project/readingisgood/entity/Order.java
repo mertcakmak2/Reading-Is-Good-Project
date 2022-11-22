@@ -49,6 +49,11 @@ public class Order {
         this.books = books;
     }
 
+    public Order(OrderStatesEnum state, Customer customer) {
+        this.state = state;
+        this.customer = customer;
+    }
+
     public Order() {}
 
     public void addBooks(List<Book> books){
