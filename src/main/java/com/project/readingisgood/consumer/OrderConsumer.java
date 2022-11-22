@@ -4,6 +4,7 @@ package com.project.readingisgood.consumer;
 import com.project.readingisgood.entity.Book;
 import com.project.readingisgood.entity.Order;
 import com.project.readingisgood.model.enums.OrderStatesEnum;
+import com.project.readingisgood.producer.StatisticProducer;
 import com.project.readingisgood.service.order.OrderService;
 import com.project.readingisgood.service.stock.StockService;
 import org.slf4j.Logger;
@@ -21,10 +22,12 @@ public class OrderConsumer {
 
     private final StockService stockService;
     private final OrderService orderService;
+    private final StatisticProducer statisticProducer;
 
-    public OrderConsumer(StockService stockService, OrderService orderService) {
+    public OrderConsumer(StockService stockService, OrderService orderService, StatisticProducer statisticProducer) {
         this.stockService = stockService;
         this.orderService = orderService;
+        this.statisticProducer = statisticProducer;
     }
 
     @KafkaListener(topics = "order-topic", concurrency = "${spring.kafka.consumer.level.concurrency:3}", properties = {"spring.json.value.default.type=com.project.readingisgood.entity.Order"})
@@ -43,6 +46,7 @@ public class OrderConsumer {
         }
         logger.info("Order will set as Created.");
         orderService.updateOrderState(OrderStatesEnum.CREATED, order.getId());
+        statisticProducer.sendToStatisticTopic(order);
     }
 
 }
