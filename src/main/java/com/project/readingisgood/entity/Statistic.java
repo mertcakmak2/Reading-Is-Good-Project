@@ -22,6 +22,13 @@ public class Statistic {
         this.totalPurchasedAmount = totalPurchasedAmount;
     }
 
+    public Statistic(String monthName, int totalOrderCount, int totalBookCount, double totalPurchasedAmount) {
+        this.monthName = monthName;
+        this.totalOrderCount = totalOrderCount;
+        this.totalBookCount = totalBookCount;
+        this.totalPurchasedAmount = totalPurchasedAmount;
+    }
+
     public Statistic() {
     }
 
