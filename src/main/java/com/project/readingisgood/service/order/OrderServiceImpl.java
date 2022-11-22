@@ -10,6 +10,7 @@ import com.project.readingisgood.exception.exceptions.OrderNotFoundException;
 import com.project.readingisgood.model.enums.OrderStatesEnum;
 import com.project.readingisgood.model.request.OrderSaveRequestModel;
 import com.project.readingisgood.model.request.PageableRequestModel;
+import com.project.readingisgood.producer.OrderProducer;
 import com.project.readingisgood.repository.OrderRepository;
 import com.project.readingisgood.service.book.BookService;
 import com.project.readingisgood.service.customer.CustomerService;
@@ -35,12 +36,14 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final CustomerService customerService;
     private final BookService bookService;
+    private final OrderProducer orderProducer;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, @Lazy CustomerService customerService, BookService bookService) {
+    public OrderServiceImpl(OrderRepository orderRepository, @Lazy CustomerService customerService, BookService bookService, OrderProducer orderProducer) {
         this.orderRepository = orderRepository;
         this.customerService = customerService;
         this.bookService = bookService;
+        this.orderProducer = orderProducer;
     }
 
     @Override
@@ -53,6 +56,7 @@ public class OrderServiceImpl implements OrderService {
         order.addBooks(books);
         orderRepository.save(order);
         logger.info("Order saved with Received state. ");
+        orderProducer.sendToOrderTopic(order);
         return order;
     }
 
