@@ -63,7 +63,7 @@ class OrderProducerTest {
     }
 
     @Test
-    void todo_send_to_kafka_test() throws InterruptedException, JsonProcessingException {
+    void order_send_to_kafka_test() throws InterruptedException, JsonProcessingException {
         Order order = new Order(1L, OrderStatesEnum.RECEIVED,new Date(),null, null);
         producer.sendToOrderTopic(order);
         ConsumerRecord<String, String> message = records.poll(5000, TimeUnit.MILLISECONDS);

@@ -56,7 +56,7 @@ class OrderConsumerTest {
     }
 
     @Test
-    void todo_consume_from_kafka_test() throws JsonProcessingException, InterruptedException {
+    void order_consume_from_kafka_test() throws JsonProcessingException, InterruptedException {
 
         Order order = new Order(1L, OrderStatesEnum.RECEIVED,new Date(),null, null);
         String message = objectMapper.writeValueAsString(order);
