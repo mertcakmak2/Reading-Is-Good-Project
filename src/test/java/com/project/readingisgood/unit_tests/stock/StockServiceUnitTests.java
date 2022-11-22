@@ -50,7 +50,6 @@ public class StockServiceUnitTests {
         var bookIds = Arrays.asList(1L);
         var stocks = Arrays.asList(getStock());
         Mockito.when(stockService.findNoStockByBookIds(bookIds)).thenReturn(stocks);
-
         var existStocks = stockService.findNoStockByBookIds(bookIds);
 
         assertNotNull(existStocks);
