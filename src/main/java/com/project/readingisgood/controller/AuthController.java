@@ -26,7 +26,7 @@ public class AuthController {
         this.authService = authService;
     }
 
-    @PostMapping(path = "")
+    @PostMapping(path = "/login")
     @Operation(summary = "Login.")
     public ResponseEntity<DataResult> login(@RequestBody @Valid LoginRequestModel loginRequestModel) {
         var dataResult = new SuccessDataResult<String>("Signed in.", authService.login(loginRequestModel));
