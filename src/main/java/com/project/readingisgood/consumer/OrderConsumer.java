@@ -30,7 +30,7 @@ public class OrderConsumer {
         this.statisticProducer = statisticProducer;
     }
 
-    @KafkaListener(topics = "order-topic", concurrency = "${spring.kafka.consumer.level.concurrency:3}", properties = {"spring.json.value.default.type=com.project.readingisgood.entity.Order"})
+    @KafkaListener(topics = "${order.topic.name}", properties = {"spring.json.value.default.type=com.project.readingisgood.entity.Order"})
     public void orderTopicListener(Order order) throws InterruptedException {
         List<Book> books = order.getBooks();
         var bookIds = books.stream().map(b -> b.getId()).collect(Collectors.toList());

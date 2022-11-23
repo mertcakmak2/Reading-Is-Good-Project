@@ -22,7 +22,7 @@ public class StatisticConsumer {
         this.statisticService = statisticService;
     }
 
-    @KafkaListener(topics = "statistic-topic", concurrency = "${spring.kafka.consumer.level.concurrency:3}", properties = {"spring.json.value.default.type=com.project.readingisgood.entity.Order"})
+    @KafkaListener(topics = "${statistic.topic.name}", properties = {"spring.json.value.default.type=com.project.readingisgood.entity.Order"})
     public void statisticTopicListener(Order order) {
         var month = getOrderMonth(order.getCreated_at());
 
