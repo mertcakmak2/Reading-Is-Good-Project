@@ -10,6 +10,7 @@ import com.project.readingisgood.model.request.PageableRequestModel;
 import com.project.readingisgood.service.customer.CustomerService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -18,6 +19,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,6 +34,13 @@ public class CustomerServiceUnitTests {
     @MockBean
     CustomerService customerService;
 
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public CustomerServiceUnitTests(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
     @Test
     void saveCustomer_test_should_save_customer() throws CustomerAlreadyExistException {
         var customer = getCustomer();
@@ -43,6 +52,21 @@ public class CustomerServiceUnitTests {
         var savedCustomer = customerService.saveCustomer(customerSaveRequest);
 
         assertEquals(customer.getEmail(), savedCustomer.getEmail());
+    }
+
+    @Test
+    void saveCustomer_test_should_hash_user_password() throws CustomerAlreadyExistException {
+        var customer = getCustomer();
+        String password = customer.getPassword();
+        var customerSaveRequest = new CustomerSaveRequestModel(
+                customer.getName(),
+                customer.getEmail(),
+                password);
+        customer.setPassword(passwordEncoder.encode(customer.getPassword()));
+        Mockito.when(customerService.saveCustomer(customerSaveRequest)).thenReturn(customer);
+        var savedCustomer = customerService.saveCustomer(customerSaveRequest);
+
+        assertNotNull(customerSaveRequest.getPassword(), savedCustomer.getPassword());
     }
 
     @Test

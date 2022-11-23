@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -28,18 +29,21 @@ public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
     private final OrderService orderService;
     private final ModelMapper modelMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public CustomerServiceImpl(CustomerRepository customerRepository, OrderService orderService, ModelMapper modelMapper) {
+    public CustomerServiceImpl(CustomerRepository customerRepository, OrderService orderService, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
         this.customerRepository = customerRepository;
         this.orderService = orderService;
         this.modelMapper = modelMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public Customer saveCustomer(CustomerSaveRequestModel customerSaveRequestModel) throws CustomerAlreadyExistException {
         validateCustomer(customerSaveRequestModel);
         Customer customer = modelMapper.map(customerSaveRequestModel, Customer.class);
+        customer.setPassword(passwordEncoder.encode(customer.getPassword()));
         customerRepository.save(customer);
         logger.info("Customer saved. {} ", customer.getEmail());
         return customer;
