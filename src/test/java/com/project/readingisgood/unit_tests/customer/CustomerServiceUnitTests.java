@@ -66,7 +66,7 @@ public class CustomerServiceUnitTests {
         Mockito.when(customerService.saveCustomer(customerSaveRequest)).thenReturn(customer);
         var savedCustomer = customerService.saveCustomer(customerSaveRequest);
 
-        assertNotNull(customerSaveRequest.getPassword(), savedCustomer.getPassword());
+        assertNotEquals(customerSaveRequest.getPassword(), savedCustomer.getPassword());
     }
 
     @Test
