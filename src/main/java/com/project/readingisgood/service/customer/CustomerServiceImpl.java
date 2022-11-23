@@ -13,7 +13,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -63,4 +68,9 @@ public class CustomerServiceImpl implements CustomerService {
         if(customer != null) throw new CustomerAlreadyExistException("Customer already exist");
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Customer customer = findCustomerByEmail(email);
+        return new User(customer.getEmail(), customer.getPassword(), new ArrayList<>());
+    }
 }

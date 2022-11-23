@@ -7,8 +7,9 @@ import com.project.readingisgood.exception.exceptions.CustomerNotFoundException;
 import com.project.readingisgood.model.request.CustomerSaveRequestModel;
 import com.project.readingisgood.model.request.PageableRequestModel;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
-public interface CustomerService {
+public interface CustomerService extends UserDetailsService {
 
     Customer saveCustomer(CustomerSaveRequestModel customerSaveRequestModel) throws CustomerAlreadyExistException;
     Customer findCustomerById(long customerId) throws CustomerNotFoundException;

@@ -15,7 +15,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -38,7 +42,7 @@ public class CustomerServiceUnitTests {
         Mockito.when(customerService.saveCustomer(customerSaveRequest)).thenReturn(customer);
         var savedCustomer = customerService.saveCustomer(customerSaveRequest);
 
-        assertEquals(customer.getEmail(),customerSaveRequest.getEmail());
+        assertEquals(customer.getEmail(), savedCustomer.getEmail());
     }
 
     @Test
@@ -64,7 +68,7 @@ public class CustomerServiceUnitTests {
         Mockito.when(customerService.findCustomerById(id)).thenReturn(customer);
         var existCustomer = customerService.findCustomerById(id);
 
-        assertEquals(id,existCustomer.getId());
+        assertEquals(id, existCustomer.getId());
     }
 
     @Test
@@ -86,19 +90,19 @@ public class CustomerServiceUnitTests {
         Mockito.when(customerService.findCustomerByEmail(email)).thenReturn(customer);
         var existCustomer = customerService.findCustomerByEmail(email);
 
-        assertEquals(email,existCustomer.getEmail());
+        assertEquals(email, existCustomer.getEmail());
     }
 
     @Test
     void retrieveOrdersOfCustomer_test_should_retrieve_orders_of_customer() throws CustomerNotFoundException {
         var customerId = 1L;
         var pageWithOrders = getPageWithOrder();
-        var pageableRequest = new PageableRequestModel(0,5);
-        Mockito.when(customerService.retrieveOrdersOfCustomer(customerId,pageableRequest))
+        var pageableRequest = new PageableRequestModel(0, 5);
+        Mockito.when(customerService.retrieveOrdersOfCustomer(customerId, pageableRequest))
                 .thenReturn(pageWithOrders);
 
         var orderPage = customerService.
-                retrieveOrdersOfCustomer(customerId,pageableRequest);
+                retrieveOrdersOfCustomer(customerId, pageableRequest);
 
         var order = orderPage.getContent().get(0);
         assertEquals(customerId, order.getCustomer().getId());
@@ -107,19 +111,44 @@ public class CustomerServiceUnitTests {
     @Test
     void retrieveOrdersOfCustomer_test_should_throw_customer_not_found_ex() {
         var customerId = 1L;
-        var pageWithOrders = getPageWithOrder();
-        var pageableRequest = new PageableRequestModel(0,5);
+        var pageableRequest = new PageableRequestModel(0, 5);
         try {
-            Mockito.when(customerService.retrieveOrdersOfCustomer(customerId,pageableRequest))
+            Mockito.when(customerService.retrieveOrdersOfCustomer(customerId, pageableRequest))
                     .thenThrow(new CustomerNotFoundException("Customer not found."));
-            customerService.retrieveOrdersOfCustomer(customerId,pageableRequest);
+            customerService.retrieveOrdersOfCustomer(customerId, pageableRequest);
         } catch (CustomerNotFoundException e) {
             assertEquals("Customer not found.", e.getMessage());
         }
     }
 
-    Customer getCustomer(){
-        return new Customer(1,"mert","mertcakmak2@gmail.com","123", null);
+    @Test
+    void loadByUsername_test_should_get_user_details() {
+        String username = "mertcakmak2@gmail.com";
+        UserDetails userDetails = new User(
+                username,
+                "password",
+                new ArrayList<>());
+        Mockito.when(customerService.loadUserByUsername(username))
+                .thenReturn(userDetails);
+        var user = customerService.loadUserByUsername(username);
+
+        assertEquals(userDetails.getUsername(), user.getUsername());
+    }
+
+    @Test
+    void loadByUsername_test_should_throw_user_name_not_found_exception() {
+        String username = "mertcakmak2@gmail.com";
+        try {
+            Mockito.when(customerService.loadUserByUsername(username))
+                    .thenThrow(new UsernameNotFoundException("User name not found."));
+            customerService.loadUserByUsername(username);
+        } catch (UsernameNotFoundException e) {
+            assertTrue(e instanceof UsernameNotFoundException);
+        }
+    }
+
+    Customer getCustomer() {
+        return new Customer(1, "mert", "mertcakmak2@gmail.com", "123", null);
     }
 
     Order getOrder() {
