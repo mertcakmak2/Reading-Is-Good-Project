@@ -28,6 +28,7 @@ public class StatisticControllerUnitTests {
     void findAllStatistics_test_method_should_find_all_statistics(){
         Statistic statistic = new Statistic(1L,"May",10,23,1461.50);
         List<Statistic> statistics = Arrays.asList(statistic);
+
         var dataResult = new SuccessDataResult<List<Statistic>>
                 ("Fetched all statistic records.", statistics);
         var expectedResponse = new ResponseEntity<DataResult>(dataResult, HttpStatus.OK);
