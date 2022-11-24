@@ -39,7 +39,7 @@ Run project.
 
 ## Credentials
 
-- testuser
+- testuser@gmail.com
 - testpassword
 
   
