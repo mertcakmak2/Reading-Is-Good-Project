@@ -17,9 +17,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 
 @Service
@@ -77,5 +79,15 @@ public class CustomerServiceImpl implements CustomerService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Customer customer = findCustomerByEmail(email);
         return new User(customer.getEmail(), customer.getPassword(), new ArrayList<>());
+    }
+
+    @PostConstruct
+    private void savaInitCustomer() {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        Customer customer = new Customer();
+        customer.setName("testuser");
+        customer.setEmail("testuser@gmail.com");
+        customer.setPassword(encoder.encode("testpassword"));
+        customerRepository.save(customer);
     }
 }
