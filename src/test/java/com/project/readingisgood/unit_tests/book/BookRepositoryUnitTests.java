@@ -15,7 +15,7 @@ import java.util.List;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class BookRepositoryUnitTests {
+class BookRepositoryUnitTests {
 
     @MockBean
     BookRepository bookRepository;

@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class AuthControllerUnitTests {
+class AuthControllerUnitTests {
 
     @MockBean
     AuthController authController;

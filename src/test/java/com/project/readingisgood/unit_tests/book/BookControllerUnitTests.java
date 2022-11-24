@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class BookControllerUnitTests {
+class BookControllerUnitTests {
 
     @MockBean
     BookController bookController;

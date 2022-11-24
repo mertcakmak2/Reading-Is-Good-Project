@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class StatisticRepositoryUnitTests {
+class StatisticRepositoryUnitTests {
 
     @MockBean
     StatisticRepository statisticRepository;

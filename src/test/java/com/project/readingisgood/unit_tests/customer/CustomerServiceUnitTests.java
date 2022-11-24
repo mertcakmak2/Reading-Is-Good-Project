@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class CustomerServiceUnitTests {
+class CustomerServiceUnitTests {
 
     @MockBean
     CustomerService customerService;

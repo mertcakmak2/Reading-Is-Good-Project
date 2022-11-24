@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class StockServiceUnitTests {
+class StockServiceUnitTests {
 
     @MockBean
     StockService stockService;

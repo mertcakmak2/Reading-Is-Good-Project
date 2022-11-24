@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class StockRepositoryUnitTests {
+class StockRepositoryUnitTests {
 
     @MockBean
     StockRepository stockRepository;

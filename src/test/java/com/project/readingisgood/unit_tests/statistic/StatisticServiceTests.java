@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class StatisticServiceTests {
+class StatisticServiceTests {
 
     @MockBean
     StatisticService statisticService;

@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class OrderServiceUnitTests {
+class OrderServiceUnitTests {
 
     @MockBean
     OrderService orderService;
