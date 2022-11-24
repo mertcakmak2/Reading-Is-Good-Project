@@ -32,10 +32,10 @@ public class StatisticController {
 
     @GetMapping(path = "")
     @Operation(summary = "Find all statistics.")
-    public ResponseEntity<DataResult> findAllStatistics() {
+    public ResponseEntity<DataResult<List<Statistic>>> findAllStatistics() {
         logger.info("Incoming request at for request /v1/statistics ");
         var dataResult = new SuccessDataResult<List<Statistic>>
                 ("Fetched all statistic records.", statisticService.findAllStatistics());
-        return new ResponseEntity<DataResult>(dataResult, HttpStatus.OK);
+        return new ResponseEntity<>(dataResult, HttpStatus.OK);
     }
 }

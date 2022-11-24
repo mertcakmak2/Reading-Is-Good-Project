@@ -31,7 +31,7 @@ class StatisticControllerUnitTests {
 
         var dataResult = new SuccessDataResult<List<Statistic>>
                 ("Fetched all statistic records.", statistics);
-        var expectedResponse = new ResponseEntity<DataResult>(dataResult, HttpStatus.OK);
+        var expectedResponse = new ResponseEntity<DataResult<List<Statistic>>>(dataResult, HttpStatus.OK);
 
         Mockito.when(statisticController.findAllStatistics()).thenReturn(expectedResponse);
         var response = statisticController.findAllStatistics();

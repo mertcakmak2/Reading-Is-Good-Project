@@ -21,38 +21,37 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = { CustomerNotFoundException.class })
     public ResponseEntity<ErrorResult> handleCustomerNotFoundException(Exception ex) {
-        ErrorResult errorResult = new ErrorResult(ex.getMessage());
-        return new ResponseEntity<>(errorResult, HttpStatus.NOT_FOUND);
+        return generateResponseEntity(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(value = { BookNotFoundException.class })
     public ResponseEntity<ErrorResult> handleBookNotFoundException(Exception ex) {
-        ErrorResult errorResult = new ErrorResult(ex.getMessage());
-        return new ResponseEntity<>(errorResult, HttpStatus.NOT_FOUND);
+        return generateResponseEntity(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(value = { OrderNotFoundException.class })
     public ResponseEntity<ErrorResult> handleOrderNotFoundException(Exception ex) {
-        ErrorResult errorResult = new ErrorResult(ex.getMessage());
-        return new ResponseEntity<>(errorResult, HttpStatus.NOT_FOUND);
+        return generateResponseEntity(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(value = { QuantityException.class })
     public ResponseEntity<ErrorResult> handleQuantityException(Exception ex) {
-        ErrorResult errorResult = new ErrorResult(ex.getMessage());
-        return new ResponseEntity<>(errorResult, HttpStatus.INTERNAL_SERVER_ERROR);
+        return generateResponseEntity(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(value = { CustomerAlreadyExistException.class })
     public ResponseEntity<ErrorResult> handleCustomerAlreadyExistException(Exception ex) {
-        ErrorResult errorResult = new ErrorResult(ex.getMessage());
-        return new ResponseEntity<>(errorResult, HttpStatus.CONFLICT);
+        return generateResponseEntity(ex.getMessage(), HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(value = { BadCredentialsException.class })
     public ResponseEntity<ErrorResult> handleBadCredentialsException(Exception ex) {
-        ErrorResult errorResult = new ErrorResult(ex.getMessage());
-        return new ResponseEntity<>(errorResult, HttpStatus.UNAUTHORIZED);
+        return generateResponseEntity(ex.getMessage(), HttpStatus.UNAUTHORIZED);
+    }
+
+    private ResponseEntity<ErrorResult> generateResponseEntity(String message, HttpStatus httpStatus){
+        ErrorResult errorResult = new ErrorResult(message);
+        return new ResponseEntity<>(errorResult, httpStatus);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

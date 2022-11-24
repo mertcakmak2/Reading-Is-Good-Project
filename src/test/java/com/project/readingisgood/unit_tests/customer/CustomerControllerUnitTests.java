@@ -41,7 +41,7 @@ class CustomerControllerUnitTests {
                 customer.getPassword());
 
         var dataResult = new SuccessDataResult<Customer>("Customer saved.", customer);
-        var expectedResponse = new ResponseEntity<DataResult>(dataResult, HttpStatus.CREATED);
+        var expectedResponse = new ResponseEntity<DataResult<Customer>>(dataResult, HttpStatus.CREATED);
 
         Mockito.when(customerController.saveCustomer(customerSaveRequest))
                 .thenReturn(expectedResponse);
@@ -56,7 +56,7 @@ class CustomerControllerUnitTests {
         var pageableRequest = new PageableRequestModel(0, 5);
 
         var dataResult = new SuccessDataResult<Page<Order>>("Fetched customer orders.", getPageWithOrder());
-        var expectedResponse = new ResponseEntity<DataResult>(dataResult, HttpStatus.OK);
+        var expectedResponse = new ResponseEntity<DataResult<Page<Order>>>(dataResult, HttpStatus.OK);
 
         Mockito.when(customerController.retrieveOrdersOfCustomer(customer.getId(),pageableRequest))
                 .thenReturn(expectedResponse);

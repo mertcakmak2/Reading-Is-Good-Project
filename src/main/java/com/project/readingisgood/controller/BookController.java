@@ -28,15 +28,15 @@ public class BookController {
 
     @PostMapping(path = "")
     @Operation(summary = "Save book.")
-    public ResponseEntity<DataResult> saveBook(@RequestBody @Valid BookSaveRequestModel bookSaveRequestModel) {
+    public ResponseEntity<DataResult<Book>> saveBook(@RequestBody @Valid BookSaveRequestModel bookSaveRequestModel) {
         var dataResult = new SuccessDataResult<Book>("Book saved.", bookService.saveBook(bookSaveRequestModel));
-        return new ResponseEntity<DataResult>(dataResult, HttpStatus.CREATED);
+        return new ResponseEntity<>(dataResult, HttpStatus.CREATED);
     }
 
     @PutMapping(path = "/{bookId}/quantity/{quantity}")
     @Operation(summary = "Update stock of book.")
-    public ResponseEntity<DataResult> updateStockOfBook(@PathVariable long bookId, @PathVariable long quantity) throws BookNotFoundException, QuantityException {
+    public ResponseEntity<DataResult<String>> updateStockOfBook(@PathVariable long bookId, @PathVariable long quantity) throws BookNotFoundException, QuantityException {
         var dataResult = new SuccessDataResult<String>("Updated book stock.", bookService.updateStockOfBook(bookId, quantity));
-        return new ResponseEntity<DataResult>(dataResult, HttpStatus.OK);
+        return new ResponseEntity<>(dataResult, HttpStatus.OK);
     }
 }

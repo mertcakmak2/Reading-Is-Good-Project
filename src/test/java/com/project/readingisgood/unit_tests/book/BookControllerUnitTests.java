@@ -31,7 +31,7 @@ class BookControllerUnitTests {
         var savedBook = new Book(1,"learn java",null,45d,null);
 
         var dataResult = new SuccessDataResult<Book>("Book saved.", savedBook);
-        var expectedResponse = new ResponseEntity<DataResult>(dataResult, HttpStatus.CREATED);
+        var expectedResponse = new ResponseEntity<DataResult<Book>>(dataResult, HttpStatus.CREATED);
 
         Mockito.when(bookController.saveBook(bookSaveRequestModel))
                 .thenReturn(expectedResponse);
@@ -40,13 +40,13 @@ class BookControllerUnitTests {
 
         Book book = (Book) response.getBody().getData();
         assertEquals(book.getBookName(), bookSaveRequestModel.getBookName());
-        assertEquals(expectedResponse.getStatusCode(), HttpStatus.CREATED);
+        assertEquals(expectedResponse.getStatusCode(), response.getStatusCode());
     }
 
     @Test
     void updateStockOfBook_test_method_should_update_book_stock() throws BookNotFoundException, QuantityException {
         var dataResult = new SuccessDataResult<String>("Updated book stock.", "Successfully updated.");
-        var expectedResponse =  new ResponseEntity<DataResult>(dataResult, HttpStatus.OK);
+        var expectedResponse =  new ResponseEntity<DataResult<String>>(dataResult, HttpStatus.OK);
 
         var bookId = 1L;
         var quantity = 15L;

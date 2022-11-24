@@ -28,7 +28,7 @@ class AuthControllerUnitTests {
                 "password"
         );
         var dataResult = new SuccessDataResult<String>("Signed in.", "jwt-token");
-        var expectedResponse = new ResponseEntity<DataResult>(dataResult, HttpStatus.OK);
+        var expectedResponse = new ResponseEntity<DataResult<String>>(dataResult, HttpStatus.OK);
 
         Mockito.when(authController.login(loginRequestModel)).thenReturn(expectedResponse);
         var response = authController.login(loginRequestModel);

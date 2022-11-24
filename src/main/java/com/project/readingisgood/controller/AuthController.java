@@ -28,8 +28,8 @@ public class AuthController {
 
     @PostMapping(path = "/login")
     @Operation(summary = "Login.")
-    public ResponseEntity<DataResult> login(@RequestBody @Valid LoginRequestModel loginRequestModel) {
+    public ResponseEntity<DataResult<String>> login(@RequestBody @Valid LoginRequestModel loginRequestModel) {
         var dataResult = new SuccessDataResult<String>("Signed in.", authService.login(loginRequestModel));
-        return new ResponseEntity<DataResult>(dataResult, HttpStatus.OK);
+        return new ResponseEntity<>(dataResult, HttpStatus.OK);
     }
 }

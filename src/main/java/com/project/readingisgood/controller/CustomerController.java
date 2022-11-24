@@ -33,16 +33,16 @@ public class CustomerController {
 
     @PostMapping(path = "")
     @Operation(summary = "Save customer.")
-    public ResponseEntity<DataResult> saveCustomer(@RequestBody @Valid CustomerSaveRequestModel customerSaveRequestModel) throws CustomerAlreadyExistException, CustomerNotFoundException {
+    public ResponseEntity<DataResult<Customer>> saveCustomer(@RequestBody @Valid CustomerSaveRequestModel customerSaveRequestModel) throws CustomerAlreadyExistException {
         var dataResult = new SuccessDataResult<Customer>("Customer saved.", customerService.saveCustomer(customerSaveRequestModel));
-        return new ResponseEntity<DataResult>(dataResult, HttpStatus.CREATED);
+        return new ResponseEntity<>(dataResult, HttpStatus.CREATED);
     }
 
     @PostMapping(path = "/{customerId}/orders")
     @Operation(summary = "Retrieve orders of customer by id.")
-    public ResponseEntity<DataResult> retrieveOrdersOfCustomer(@PathVariable long customerId, @RequestBody PageableRequestModel pageableRequestModel) throws CustomerNotFoundException {
+    public ResponseEntity<DataResult<Page<Order>>> retrieveOrdersOfCustomer(@PathVariable long customerId, @RequestBody PageableRequestModel pageableRequestModel) throws CustomerNotFoundException {
         var dataResult = new SuccessDataResult<Page<Order>>("Fetched customer orders.", customerService.retrieveOrdersOfCustomer(customerId, pageableRequestModel));
-        return new ResponseEntity<DataResult>(dataResult, HttpStatus.OK);
+        return new ResponseEntity<>(dataResult, HttpStatus.OK);
     }
 
 }

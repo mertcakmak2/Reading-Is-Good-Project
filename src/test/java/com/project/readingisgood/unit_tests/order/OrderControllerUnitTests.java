@@ -38,7 +38,7 @@ class OrderControllerUnitTests {
         var orderSaveReq = new OrderSaveRequestModel(customerId,ids);
 
         var dataResult = new SuccessDataResult<Order>("Order received.", order);
-        var expectedResponse = new ResponseEntity<DataResult>(dataResult, HttpStatus.CREATED);
+        var expectedResponse = new ResponseEntity<DataResult<Order>>(dataResult, HttpStatus.CREATED);
 
         Mockito.when(orderController.orderBook(orderSaveReq)).thenReturn(expectedResponse);
         var response = orderController.orderBook(orderSaveReq);
@@ -52,7 +52,7 @@ class OrderControllerUnitTests {
         Order order = new Order(orderId, OrderStatesEnum.RECEIVED, new Date(), null, null);
 
         var dataResult = new SuccessDataResult<Order>("Order found by id.", order);
-        var expectedResponse = new ResponseEntity<DataResult>(dataResult, HttpStatus.OK);
+        var expectedResponse = new ResponseEntity<DataResult<Order>>(dataResult, HttpStatus.OK);
 
         Mockito.when(orderController.findOrderById(orderId)).thenReturn(expectedResponse);
         var response = orderController.findOrderById(orderId);
@@ -66,7 +66,7 @@ class OrderControllerUnitTests {
         Order order = new Order(orderId, OrderStatesEnum.RECEIVED, new Date(), null, null);
         var orders = Arrays.asList(order);
         var dataResult = new SuccessDataResult<List<Order>>("Orders found by date interval.", orders);
-        var expectedResponse = new ResponseEntity<DataResult>(dataResult, HttpStatus.OK);
+        var expectedResponse = new ResponseEntity<DataResult<List<Order>>>(dataResult, HttpStatus.OK);
 
         var beginDate = new Date();
         var endDate = new Date();
