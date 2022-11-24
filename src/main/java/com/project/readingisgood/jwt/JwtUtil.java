@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
@@ -18,7 +19,8 @@ public class JwtUtil {
 
     Logger logger = LoggerFactory.getLogger(JwtUtil.class);
 
-    private String secret = "reading_is_good_secret_key";
+    @Value("${jwt.secret.key}")
+    private String secret;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
