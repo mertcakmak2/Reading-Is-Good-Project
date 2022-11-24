@@ -18,7 +18,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     Page<Order> findOrdersByCustomer_Id(long customerId, Pageable pageable);
 
-    @Query("from Order o where o.created_at between :beginDate and :endDate order by o.id")
+    @Query("from Order o where o.createdAt between :beginDate and :endDate order by o.id")
     List<Order> findOrdersByDateInterval(Date beginDate, Date endDate);
 
     @Modifying

@@ -31,9 +31,9 @@ public class OrderConsumer {
     }
 
     @KafkaListener(topics = "${order.topic.name}", properties = {"spring.json.value.default.type=com.project.readingisgood.entity.Order"})
-    public void orderTopicListener(Order order) throws InterruptedException {
+    public void orderTopicListener(Order order) {
         List<Book> books = order.getBooks();
-        var bookIds = books.stream().map(b -> b.getId()).collect(Collectors.toList());
+        var bookIds = books.stream().map(Book::getId).collect(Collectors.toList());
         var noStockBooks = stockService.findNoStockByBookIds(bookIds);
         if (!noStockBooks.isEmpty()) {
             logger.info("No stock, order will cancel.");

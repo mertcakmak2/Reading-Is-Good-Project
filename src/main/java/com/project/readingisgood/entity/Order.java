@@ -24,7 +24,7 @@ public class Order {
     private OrderStatesEnum state;
     @CreatedDate
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    private Date created_at;
+    private Date createdAt;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
@@ -41,10 +41,10 @@ public class Order {
     private List<Book> books = new ArrayList<>();
 
 
-    public Order(long id, OrderStatesEnum state, Date created_at, Customer customer, List<Book> books) {
+    public Order(long id, OrderStatesEnum state, Date createdAt, Customer customer, List<Book> books) {
         this.id = id;
         this.state = state;
-        this.created_at = created_at;
+        this.createdAt = createdAt;
         this.customer = customer;
         this.books = books;
     }
@@ -79,12 +79,12 @@ public class Order {
         this.state = state;
     }
 
-    public Date getCreated_at() {
-        return created_at;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(Date created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(Date created_at) {
+        this.createdAt = created_at;
     }
 
     public Customer getCustomer() {
@@ -108,7 +108,7 @@ public class Order {
         return "Order{" +
                 "id=" + id +
                 ", state=" + state +
-                ", created_at=" + created_at +
+                ", created_at=" + createdAt +
                 ", customer=" + customer +
                 ", books=" + books +
                 '}';

@@ -43,7 +43,7 @@ public class StatisticServiceImpl implements StatisticService {
         existStatistic.setTotalOrderCount(existStatistic.getTotalOrderCount() + 1 );
         existStatistic.setTotalBookCount(existStatistic.getTotalBookCount() + orderStatistic.getBookSize());
         existStatistic.setTotalPurchasedAmount(existStatistic.getTotalPurchasedAmount() + orderStatistic.getSumPrice());
-        logger.info("Statistic updated. "+ existStatistic.getMonthName());
+        logger.info("Statistic updated.  {} ", existStatistic.getMonthName());
         return statisticRepository.save(existStatistic);
     }
 

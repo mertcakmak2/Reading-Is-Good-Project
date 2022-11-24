@@ -1,5 +1,6 @@
 package com.project.readingisgood.consumer;
 
+import com.project.readingisgood.entity.Book;
 import com.project.readingisgood.entity.Order;
 import com.project.readingisgood.model.OrderStatistic;
 import com.project.readingisgood.service.statistic.StatisticService;
@@ -28,10 +29,10 @@ public class StatisticConsumer {
 
     @KafkaListener(topics = "${statistic.topic.name}", properties = {"spring.json.value.default.type=com.project.readingisgood.entity.Order"})
     public void statisticTopicListener(Order order) {
-        var month = getOrderMonth(order.getCreated_at());
+        var month = getOrderMonth(order.getCreatedAt());
 
         var books = order.getBooks();
-        var prices = books.stream().map(b -> b.getPrice() ).collect(Collectors.toList());
+        var prices = books.stream().map(Book::getPrice).collect(Collectors.toList());
         var sumPrice = prices.stream().reduce(0d, Double::sum);
         OrderStatistic orderStatistic = new OrderStatistic(month, books.size(), sumPrice);
         logger.info("Save monthly statistic. Month: {}, Order Id: {}", month, order.getId());

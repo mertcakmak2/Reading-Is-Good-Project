@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class JwtUtilTests {
+class JwtUtilTests {
 
     @MockBean
     JwtUtil jwtUtil;
