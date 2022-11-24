@@ -37,7 +37,7 @@ Run project.
 ## Http Tracing with Jaeger
 ![Screenshot_25](https://user-images.githubusercontent.com/21373505/203793098-d61f097e-6858-44bf-823f-24171a64856d.png)
 
-## Credentials
+## Test Credentials
 
 - testuser@gmail.com
 - testpassword
