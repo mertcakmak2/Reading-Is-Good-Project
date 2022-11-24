@@ -37,10 +37,14 @@ Run project.
 ## Http Tracing with Jaeger
 ![Screenshot_25](https://user-images.githubusercontent.com/21373505/203793098-d61f097e-6858-44bf-823f-24171a64856d.png)
 
-## Test Credentials
+## Login with Below Test Credentials
 
 - testuser@gmail.com
 - testpassword
+
+## Authorization on Swagger with Jwt
+![Screenshot_26](https://user-images.githubusercontent.com/21373505/203799612-99238c88-a5c7-47d4-9321-b9c51c95a039.png)
+
 
   
   
