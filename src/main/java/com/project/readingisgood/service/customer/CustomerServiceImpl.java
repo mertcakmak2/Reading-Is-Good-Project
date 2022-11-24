@@ -83,11 +83,13 @@ public class CustomerServiceImpl implements CustomerService {
 
     @PostConstruct
     private void savaInitCustomer() {
+        var email = "testuser@gmail.com";
+        Customer existCustomer = customerRepository.findCustomerByEmail(email);
+        if(existCustomer != null) return;
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         Customer customer = new Customer();
         customer.setName("testuser");
-        customer.setEmail("testuser@gmail.com");
+        customer.setEmail(email);
         customer.setPassword(encoder.encode("testpassword"));
-        customerRepository.save(customer);
     }
 }
