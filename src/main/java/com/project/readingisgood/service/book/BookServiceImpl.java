@@ -43,6 +43,7 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public Book findBookById(long bookId) throws BookNotFoundException {
+        logger.info("Find book by id. {} ", bookId);
         return bookRepository.findById(bookId).orElseThrow(() -> new BookNotFoundException("Book not found"));
     }
 
@@ -56,6 +57,7 @@ public class BookServiceImpl implements BookService{
         if( quantity < 0) throw new QuantityException("Quantity cannot be less than 0");
         findBookById(bookId);
         stockService.updateStockQuantityByBookId(quantity,bookId);
+        logger.info("Updated book stock by id. {} ", bookId);
         return "Successfully updated";
     }
 

@@ -62,6 +62,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order findOrderById(long orderId) throws OrderNotFoundException {
+        logger.info("Find order by id. Id: {} .", orderId);
         return orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("Order not found"));
     }
 
@@ -73,11 +74,13 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Page<Order> findOrdersByCustomerId(long customerId, PageableRequestModel pageableRequestModel) {
         Pageable paging = PageRequest.of(pageableRequestModel.getPage(), pageableRequestModel.getSize(), Sort.by("id"));
+        logger.info("Find orders by customer id. Id: {} .", customerId);
         return orderRepository.findOrdersByCustomer_Id(customerId, paging);
     }
 
     @Override
     public List<Order> findOrdersByDateInterval(Date beginDate, Date endDate ) {
+        logger.info("Find orders by date interval. Begin Date: {} . End Date: {} .", beginDate, endDate);
         return orderRepository.findOrdersByDateInterval(beginDate,endDate);
     }
 

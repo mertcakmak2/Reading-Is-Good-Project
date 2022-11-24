@@ -4,6 +4,8 @@ import com.project.readingisgood.entity.Customer;
 import com.project.readingisgood.jwt.JwtUtil;
 import com.project.readingisgood.model.request.LoginRequestModel;
 import com.project.readingisgood.service.customer.CustomerService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthServiceImpl implements AuthService {
+
+    Logger logger = LoggerFactory.getLogger(AuthServiceImpl.class);
 
     private final CustomerService customerService;
     private final JwtUtil jwtUtil;
@@ -28,6 +32,7 @@ public class AuthServiceImpl implements AuthService {
     public String login(LoginRequestModel loginRequestModel) {
         Customer customer = customerService.findCustomerByEmail(loginRequestModel.getEmail());
         checkCredentials(customer,loginRequestModel);
+        logger.info("{} sign in.", customer.getEmail());
         return jwtUtil.generateToken(customer.getEmail());
     }
 

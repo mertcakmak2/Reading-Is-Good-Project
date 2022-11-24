@@ -65,6 +65,7 @@ public class CustomerServiceImpl implements CustomerService {
     public Page<Order> retrieveOrdersOfCustomer(long customerId, PageableRequestModel pageableRequestModel) throws CustomerNotFoundException {
         Customer customer = findCustomerById(customerId);
         Page<Order> orders = orderService.findOrdersByCustomerId(customer.getId(), pageableRequestModel);
+        logger.info("Retrieve orders of {} .", customer.getEmail());
         return orders;
     }
 

@@ -49,6 +49,7 @@ public class StatisticServiceImpl implements StatisticService {
 
     @Override
     public Statistic findStatisticByMonthName(String monthName) {
+        logger.info("Find statistic by month name. {} ", monthName);
         return statisticRepository.findStatisticByMonthName(monthName);
     }
 

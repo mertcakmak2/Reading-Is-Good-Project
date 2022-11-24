@@ -3,6 +3,8 @@ package com.project.readingisgood.consumer;
 import com.project.readingisgood.entity.Order;
 import com.project.readingisgood.model.OrderStatistic;
 import com.project.readingisgood.service.statistic.StatisticService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
@@ -14,6 +16,8 @@ import java.util.stream.Collectors;
 
 @Component
 public class StatisticConsumer {
+
+    Logger logger = LoggerFactory.getLogger(StatisticConsumer.class);
 
     private final StatisticService statisticService;
 
@@ -30,6 +34,7 @@ public class StatisticConsumer {
         var prices = books.stream().map(b -> b.getPrice() ).collect(Collectors.toList());
         var sumPrice = prices.stream().reduce(0d, Double::sum);
         OrderStatistic orderStatistic = new OrderStatistic(month, books.size(), sumPrice);
+        logger.info("Save monthly statistic. Month: {}, Order Id: {}", month, order.getId());
         statisticService.saveMonthlyStatistic(orderStatistic);
     }
 
